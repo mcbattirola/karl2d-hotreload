@@ -4,7 +4,7 @@ This is a small, kinda hacked-together hot reload setup for Odin + [Karl2D](http
 
 Right now it only supports Windows, but the code is mostly portable. You’d just need to write a `build-hot-reload.sh` for macOS/Linux.
 
-Tested in `odin version dev-2025-12-nightly:6ef91e2`
+Tested in `odin version dev-2026-04-nightly:a896fb2`
 
 ## How it works
 

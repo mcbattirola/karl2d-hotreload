@@ -10,8 +10,8 @@ import "core:fmt"
 import "core:log"
 import "core:mem"
 import "core:os"
-import "core:os/os2"
 import "core:path/filepath"
+import "core:time"
 
 when ODIN_OS == .Windows {
 	DLL_EXT :: ".dll"
@@ -27,7 +27,7 @@ GAME_DLL_PATH :: GAME_DLL_DIR + "game" + DLL_EXT
 // We copy the DLL because using it directly would lock it, which would prevent
 // the compiler from writing to it.
 copy_dll :: proc(to: string) -> bool {
-	copy_err := os2.copy_file(to, GAME_DLL_PATH)
+	copy_err := os.copy_file(to, GAME_DLL_PATH)
 
 	if copy_err != nil {
 		fmt.printfln("Failed to copy " + GAME_DLL_PATH + " to {0}: %v", to, copy_err)
@@ -48,7 +48,7 @@ Game_API :: struct {
 	game_hot_reloaded:  proc(mem: rawptr, k2mem: rawptr),
 	game_force_reload:  proc() -> bool,
 	game_force_restart: proc() -> bool,
-	modification_time:  os.File_Time,
+	modification_time:  time.Time,
 	api_version:        int,
 }
 
@@ -99,7 +99,7 @@ unload_game_api :: proc(api: ^Game_API) {
 main :: proc() {
 	exe_path := os.args[0]
 	exe_dir := filepath.dir(string(exe_path), context.temp_allocator)
-	os.set_current_directory(exe_dir)
+	os.set_working_directory(exe_dir)
 
 	context.logger = log.create_console_logger()
 
