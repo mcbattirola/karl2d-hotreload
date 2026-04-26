@@ -181,8 +181,6 @@ main :: proc() {
 					clear(&old_game_apis)
 					unload_game_api(&game_api)
 
-					reset_tracking_allocator(&tracking_allocator)
-
 					game_api = new_game_api
 
 					game_api.game_init(k2state)
