@@ -209,13 +209,6 @@ main :: proc() {
 
 	free_all(context.temp_allocator)
 	game_api.game_shutdown()
-	if reset_tracking_allocator(&tracking_allocator) {
-		// This prevents the game from closing without you seeing the memory
-		// leaks. This is mostly needed because I use Sublime Text and my game's
-		// console isn't hooked up into Sublime's console properly.
-		libc.getchar()
-	}
-
 	for &g in old_game_apis {
 		unload_game_api(&g)
 	}
@@ -225,6 +218,12 @@ main :: proc() {
 	k2.shutdown()
 
 	unload_game_api(&game_api)
+	if reset_tracking_allocator(&tracking_allocator) {
+		// This prevents the game from closing without you seeing the memory
+		// leaks. This is mostly needed because I use Sublime Text and my game's
+		// console isn't hooked up into Sublime's console properly.
+		libc.getchar()
+	}
 	mem.tracking_allocator_destroy(&tracking_allocator)
 }
 
